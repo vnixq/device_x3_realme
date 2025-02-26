@@ -1,0 +1,19 @@
+# Bluetooth
+persist.vendor.service.bt.iot.enablelogging u:object_r:vendor_bluetooth_prop:s0
+vendor.bluetooth.soc                u:object_r:vendor_bluetooth_prop:s0
+
+# Camera
+persist.camera.                     u:object_r:vendor_camera_prop:s0
+vendor.oppo.camera.                 u:object_r:vendor_camera_prop:s0
+
+# Fingerprint
+persist.vendor.fingerprint.         u:object_r:oppo_fp_prop:s0
+vendor.fingerprint.optical.goodix.hal.retry u:object_r:oppo_fp_prop:s0
+vendor.fingerprint.cali             u:object_r:oppo_fp_prop:s0
+persist.vendor.rpmb.enable.state    u:object_r:oppo_fp_prop:s0
+
+# NFC
+vendor.nfc_se.config_ready          u:object_r:vendor_nfc_nq_prop:s0
+
+# Project
+ro.hardware.chipname                u:object_r:exported_default_prop:s0

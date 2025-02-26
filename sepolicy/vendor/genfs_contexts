@@ -1,0 +1,37 @@
+# Devinfo
+genfscon proc /devinfo                                                     u:object_r:proc_devinfo:s0
+
+# Fingerprint
+genfscon proc /fp_id                                                       u:object_r:fp_proc:s0
+
+# Flash
+genfscon proc /qcom_flash                                                  u:object_r:cam_proc:s0
+
+# Graphics
+genfscon sysfs /devices/platform/soc/ae00000.qcom,mdss_mdp/drm/card0/sde-crtc-    u:object_r:vendor_sysfs_sde_crtc:s0
+
+# Oppo Display
+genfscon sysfs /kernel/oppo_display                                        u:object_r:sysfs_oppo_display:s0
+
+# Project version
+genfscon proc /oppoVersion                                                 u:object_r:oppo_ver_proc:s0
+
+# Touchpanel
+genfscon proc /touchpanel                                                  u:object_r:proc_touchpanel:s0
+
+# Sched
+genfscon proc /sys/kernel/sched_upmigrate                                  u:object_r:proc_sched:s0
+genfscon proc /sys/kernel/sched_downmigrate                                u:object_r:proc_sched:s0
+
+# Wakeup
+genfscon sysfs /devices/platform/soc/c8c000.qcom,qup_uart/tty/ttyHS0/power/wakeup                                                                                                    u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-00/c440000.qcom,spmi:qcom,pm8150@0:qcom,power-on@800/wakeup                                                      u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-04/c440000.qcom,spmi:qcom,pm8150l@4:qcom,power-on@800/wakeup                                                     u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,power-on@800/wakeup                                                     u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,sdam-qnovo@b000/wakeup                                                  u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,qpnp-smb5/wakeup                                                        u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,qpnp-smb5/power_supply/ac/wakeup28                                      u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8150b@2:qcom,qpnp-smb5/power_supply/battery/wakeup29                                 u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/a84000.i2c/i2c-4/4-0028/wakeup                                                                                                                  u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/platform/soc/171c0000.slim/tavil-slim-pgd/wakeup                                                                                                             u:object_r:sysfs_wakeup:s0
+genfscon sysfs /devices/virtual/diag/diag/wakeup6                                                                                                                                    u:object_r:sysfs_wakeup:s0

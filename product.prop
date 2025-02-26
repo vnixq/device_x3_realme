@@ -1,0 +1,43 @@
+# Bionic
+ro.bionic.cpu_variant=cortex-a76
+ro.bionic.2nd_cpu_variant=cortex-a55
+
+# Camera
+media.settings.xml=/vendor/etc/media_profiles_vendor.xml
+
+# Charger
+ro.charger.enable_suspend=true
+
+# Dalvik
+dalvik.vm.isa.arm.variant=cortex-a55
+dalvik.vm.isa.arm64.variant=cortex-a76
+
+# Display
+debug.sf.frame_rate_multiple_threshold=120
+persist.sys.sf.native_mode=1
+ro.sf.lcd_density=440
+ro.vendor.display.ad=1
+ro.vendor.display.sensortype=2
+ro.vendor.display.ad.sdr_calib_data=/vendor/etc/OPPO_OLED_AD_calib.cfg
+
+# Incremental FS
+ro.incremental.enable=1
+
+# Battery Saving
+ro.vold.umsdirtyratio=20 
+ro.ril.disable.power.collapse=0 
+power.saving.mode=1
+
+# LMKD
+ro.config.low_ram=false
+ro.lmk.kill_heaviest_task=true
+ro.lmk.kill_timeout_ms=15
+ro.lmk.use_minfree_levels=true
+
+# Phantom process monitoring
+sys.fflag.override.settings_enable_monitor_phantom_procs=false
+
+# Radio
+persist.vendor.radio.data_con_rprt=1
+persist.vendor.radio.process_sups_ind=1
+persist.vendor.radio.add_power_save=1

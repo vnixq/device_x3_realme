@@ -1,0 +1,14 @@
+# Cryptoeng
+attribute hal_cryptoeng;
+attribute hal_cryptoeng_client;
+attribute hal_cryptoeng_server;
+
+# Engsensor
+attribute hal_engsensor;
+attribute hal_engsensor_client;
+attribute hal_engsensor_server;
+
+# Dolby
+attribute hal_dms;
+attribute hal_dms_client;
+attribute hal_dms_server;

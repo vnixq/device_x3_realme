@@ -1,0 +1,2 @@
+# Allow system_app to set cabc props
+set_prop(system_app, cabc_prop)
