@@ -1,0 +1,179 @@
+#
+# Copyright (C) 2022 The LineageOS Project
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+on init
+    # Charger
+    write /proc/fastchg_fw_update 1
+    write /proc/ui_soc_decimal 1
+
+on fs
+    # Update touchpanel firmware in case we ship newer firmware in /odm
+    write /proc/touchpanel/tp_fw_update 0
+
+on early-boot
+    # SSR
+    write /sys/bus/msm_subsys/devices/subsys0/restart_level RELATED
+    write /sys/bus/msm_subsys/devices/subsys1/restart_level RELATED
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level RELATED
+    write /sys/bus/msm_subsys/devices/subsys3/restart_level RELATED
+    write /sys/bus/msm_subsys/devices/subsys4/restart_level RELATED
+    write /sys/bus/msm_subsys/devices/subsys5/restart_level RELATED
+    write /sys/bus/msm_subsys/devices/subsys6/restart_level RELATED
+    write /sys/bus/msm_subsys/devices/subsys7/restart_level RELATED
+    write /sys/bus/msm_subsys/devices/subsys8/restart_level RELATED
+
+on boot
+    # Display
+    chown system system /sys/kernel/oppo_display/hbm
+    chown system system /sys/kernel/oppo_display/seed
+    chown system system /sys/kernel/oppo_display/LCM_CABC
+    chown system system /sys/kernel/oppo_display/dimlayer_bl_en
+    chown system system /sys/kernel/oppo_display/ffl_set
+    chown system system /sys/kernel/oppo_display/dump_info
+    chown system system /sys/kernel/oppo_display/esd_status
+    chown system system /sys/kernel/oppo_display/power_status
+    chown system system /sys/kernel/oppo_display/dimlayer_hbm
+    chown system system /sys/kernel/oppo_display/notify_fppress
+    chown system system /sys/kernel/oppo_display/force_screenfp
+    chown system system /sys/kernel/oppo_display/sau_closebl_node
+    chown system system /sys/kernel/oppo_display/panel_serial_number
+    chown system system /sys/kernel/oppo_display/audio_ready
+    chown system system /sys/kernel/oppo_display/aod_light_mode_set
+    chown system system /sys/kernel/oppo_display/serial_number
+    chown system system /sys/kernel/oppo_display/hdr10
+
+    chmod 0644 /sys/kernel/oppo_display/hbm
+    chmod 0644 /sys/kernel/oppo_display/seed
+    chmod 0644 /sys/kernel/oppo_display/LCM_CABC
+    chmod 0644 /sys/kernel/oppo_display/dimlayer_bl_en
+    chmod 0644 /sys/kernel/oppo_display/ffl_set
+    chmod 0644 /sys/kernel/oppo_display/dump_info
+    chmod 0644 /sys/kernel/oppo_display/esd_status
+    chmod 0644 /sys/kernel/oppo_display/power_status
+    chmod 0644 /sys/kernel/oppo_display/dimlayer_hbm
+    chmod 0644 /sys/kernel/oppo_display/notify_fppress
+    chmod 0644 /sys/kernel/oppo_display/force_screenfp
+    chmod 0644 /sys/kernel/oppo_display/sau_closebl_node
+    chmod 0644 /sys/kernel/oppo_display/panel_serial_number
+    chmod 0644 /sys/kernel/oppo_display/audio_ready
+    chmod 0644 /sys/kernel/oppo_display/aod_light_mode_set
+    chmod 0644 /sys/kernel/oppo_display/serial_number
+    chmod 0644 /sys/kernel/oppo_display/hdr10
+ 
+    # Touchpanel
+    chown system system /proc/touchpanel/tp_fw_update
+    chown system system /proc/touchpanel/oplus_tp_limit_enable
+    chown system system /proc/touchpanel/oplus_tp_direction
+    chown system system /proc/touchpanel/double_tap_enable
+    chown system system /proc/touchpanel/coordinate
+    chown system system /proc/touchpanel/game_switch_enable
+    chown system system /proc/touchpanel/fd_enable
+    chown system system /proc/touchpanel/event_num
+    chown system system /proc/touchpanel/fd_touch_count
+    chown system system /proc/touchpanel/fp_enable
+    chown system system /proc/touchpanel/touch_filter
+    chown system system /proc/touchpanel/baseline_test
+
+    # Sensors
+    chown system system /sys/devices/platform/soc/soc:sensor_fb/adsp_notify
+
+    # TOF
+    chown cameraserver cameraserver /dev/stmvl53l1_ranging
+
+    # Ultrasound
+    chmod 0666 /dev/audio_ultrasound
+    chmod 0666 /dev/sensor_ultrasound
+
+    # Charger
+    chown system system /sys/class/power_supply/battery/mmi_charging_enable
+
+    # OTG
+    write /sys/class/power_supply/usb/otg_switch 1
+
+on property:ro.boot.prjname=*
+    # Display
+    setprop ro.separate.soft ${ro.boot.prjname}
+
+on property:sys.boot_completed=1
+    # Display
+    copy /vendor/etc/Oppo_QC_LTM_Commercial_SM8250_2020_01_15.pfm /mnt/vendor/persist/data/pfm/licenses/1000-1000-no-exp-1186717196.pfm
+    chown system system /mnt/vendor/persist/data/pfm/licenses/1000-1000-no-exp-1186717196.pfm
+
+on property:sys.usb.config=adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2769
+
+on property:sys.usb.config=mass_storage && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idProduct 0x2768
+    write /config/usb_gadget/g1/idVendor 0x22D9
+
+on property:sys.usb.config=mtp && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2764
+
+on property:sys.usb.config=mtp,adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2765
+
+on property:sys.usb.config=ptp && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2771
+
+on property:sys.usb.config=ptp,adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2772
+
+on property:sys.usb.config=rndis,none && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x276A
+
+on property:sys.usb.config=rndis,serial_cdev,diag && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2783
+
+on property:sys.usb.ffs.ready=1 && property:sys.usb.config=diag,adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x276C
+
+on property:sys.usb.ffs.ready=1 && property:sys.usb.config=diag,diag_mdm,adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x276E
+
+on property:sys.usb.ffs.ready=1 && property:sys.usb.config=mass_storage,adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2767
+
+on property:sys.usb.ffs.ready=1 && property:sys.usb.config=rndis,diag,adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2775
+
+on property:sys.usb.ffs.ready=1 && property:sys.usb.config=rndis,none,adb && property:sys.usb.configfs=1
+    write /config/usb_gadget/g1/idVendor 0x22D9
+    write /config/usb_gadget/g1/idProduct 0x2766
+
+service oplus-wifi-sh /odm/bin/init.oplus.wifi.sh
+    class core
+    user root
+    oneshot
+
+service oplus_sensor_fb /odm/bin/oplus_sensor_fb
+    user system
+    group system
+    class late_start
+    oneshot
+
+service vl53l1_daemon_main /odm/bin/vl53l1_daemon_main
+    class late_start
+    user root
+    group root
+    socket vl53l1_daemon stream 660 root system
+
+service vendor.adsprpcd /vendor/bin/adsprpcd
+    override
+    class main
+    user system
+    group media
+    disabled

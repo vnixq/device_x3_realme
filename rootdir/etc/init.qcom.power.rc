@@ -1,0 +1,105 @@
+on init
+    # Boot time cpusets
+    write /dev/cpuset/foreground/cpus 0-3,5-6
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-3
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/restricted/cpus 0-3
+
+    # Drop write bit from cpu_(min/max)_freq so that libqti-perfd can't set it
+    chmod 0444 /sys/module/msm_performance/parameters/cpu_min_freq
+    chmod 0444 /sys/module/msm_performance/parameters/cpu_max_freq
+
+    # Boot time FS tune
+    write /sys/block/sda/queue/iostats 0
+    write /sys/block/sda/queue/scheduler cfq
+    write /sys/block/sda/queue/iosched/slice_idle 0
+    write /sys/block/sda/queue/nr_requests 256
+    write /sys/block/sdf/queue/iostats 0
+    write /sys/block/sdf/queue/scheduler cfq
+    write /sys/block/sdf/queue/iosched/slice_idle 0
+    write /sys/block/sdf/queue/nr_requests 256
+
+    # Disable UFS powersaving
+    write /sys/devices/platform/soc/${ro.boot.bootdevice}/clkgate_enable 0
+    write /sys/devices/platform/soc/${ro.boot.bootdevice}/hibern8_on_idle_enable 0
+
+    # Disable powersaving
+    write /sys/module/lpm_levels/parameters/sleep_disabled 1
+
+on boot
+    # Disable performance profile by default
+    setprop perf_profile 0
+
+# Balanced
+on property:perf_profile=0
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 257000000
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 585000000
+
+    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 5
+
+    write /proc/sys/kernel/sched_upmigrate "95 95"
+    write /proc/sys/kernel/sched_downmigrate "85 85"
+
+    write /proc/sys/vm/swappiness 100
+
+    # skin-therm
+    write /sys/class/thermal/thermal_zone72/cdev0_upper_limit 12
+    write /sys/class/thermal/thermal_zone72/cdev1_upper_limit 15
+
+    setprop vendor.display.enable_rotator_ui 0
+
+# Gaming
+on property:perf_profile=1
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 257000000
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 675000000
+
+    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 1
+
+    write /proc/sys/kernel/sched_upmigrate "96 88"
+    write /proc/sys/kernel/sched_downmigrate "55 66"
+
+    write /proc/sys/vm/swappiness 1
+
+    # skin-therm
+    write /sys/class/thermal/thermal_zone72/cdev0_upper_limit 00
+    write /sys/class/thermal/thermal_zone72/cdev1_upper_limit 00
+
+    setprop vendor.display.enable_rotator_ui 1
+
+on property:init.svc.vendor.charger=running
+    # Keep one LITTLE and one big
+    write /sys/devices/system/cpu/cpu1/online 0
+    write /sys/devices/system/cpu/cpu2/online 0
+    write /sys/devices/system/cpu/cpu3/online 0
+    write /sys/devices/system/cpu/cpu5/online 0
+    write /sys/devices/system/cpu/cpu6/online 0
+    write /sys/devices/system/cpu/cpu7/online 0
+    wait /dev/block/bootdevice
+
+    # Enable UFS powersaving
+    write /sys/devices/platform/soc/${ro.boot.bootdevice}/clkgate_enable 1
+    write /sys/devices/platform/soc/${ro.boot.bootdevice}/hibern8_on_idle_enable 1
+
+    # Turn on sleep modes
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+
+on enable-low-power
+    # Enable UFS powersaving
+    write /sys/devices/platform/soc/${ro.boot.bootdevice}/clkgate_enable 1
+    write /sys/devices/platform/soc/${ro.boot.bootdevice}/hibern8_on_idle_enable 1
+
+on property:sys.boot_completed=1
+    trigger enable-low-power
+
+on property:init.svc.recovery=running
+    trigger enable-low-power
+
+on late-fs
+    # Runtime FS tuning: as we have init boottime setting and kernel patch setting
+    # default readahead to 2048KB. We should adjust the setting upon boot_complete
+    # for runtime performance
+    write /sys/block/sda/queue/nr_requests 128
+    write /sys/block/sda/queue/iostats 1
+    write /sys/block/sdf/queue/nr_requests 128
+    write /sys/block/sdf/queue/iostats 1
