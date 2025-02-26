@@ -1,0 +1,5 @@
+runtime_resource_overlay {
+    name: "WifiRes",
+    theme: "WifiRes",
+    product_specific: true
+}
